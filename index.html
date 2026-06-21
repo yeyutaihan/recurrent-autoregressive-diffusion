@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Recurrent Autoregressive Diffusion</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Georgia', serif;
+      background-color: #fafafa;
+      color: #222;
+      line-height: 1.7;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+      color: white;
+      padding: 60px 20px 50px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      font-weight: bold;
+      max-width: 860px;
+      margin: 0 auto 24px;
+      line-height: 1.35;
+      letter-spacing: 0.01em;
+    }
+
+    .authors {
+      font-size: 1rem;
+      color: #ccd6f6;
+      margin-bottom: 32px;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 24px;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-family: 'Arial', sans-serif;
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.1s;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      opacity: 0.85;
+      transform: translateY(-1px);
+    }
+
+    .btn-paper {
+      background-color: #e63946;
+      color: white;
+    }
+
+    .btn-code {
+      background-color: #2ec4b6;
+      color: white;
+    }
+
+    .btn svg {
+      width: 18px;
+      height: 18px;
+      fill: white;
+    }
+
+    main {
+      max-width: 860px;
+      margin: 60px auto;
+      padding: 0 24px;
+    }
+
+    section {
+      margin-bottom: 56px;
+    }
+
+    section h2 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      border-bottom: 2px solid #0f3460;
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+      color: #0f3460;
+      letter-spacing: 0.02em;
+    }
+
+    section p {
+      font-size: 1.05rem;
+      color: #333;
+      text-align: justify;
+    }
+
+    .teaser {
+      background: #eef2ff;
+      border-left: 4px solid #0f3460;
+      border-radius: 6px;
+      padding: 24px 28px;
+      font-size: 1.05rem;
+      color: #1a1a2e;
+      font-style: italic;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      font-size: 0.85rem;
+      color: #888;
+      border-top: 1px solid #e0e0e0;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Recurrent Autoregressive Diffusion:<br>Global Memory Meets Local Attention</h1>
+    <p class="authors">Anonymous Authors &nbsp;·&nbsp; 2025</p>
+    <div class="button-group">
+      <!-- Replace href="#" with your actual paper link -->
+      <a class="btn btn-paper" href="#" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/>
+        </svg>
+        Paper
+      </a>
+      <!-- Replace href="#" with your actual code/GitHub link -->
+      <a class="btn btn-code" href="#" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.1 3.29 9.42 7.86 10.95.58.1.79-.25.79-.56 0-.28-.01-1.02-.01-2-3.2.69-3.87-1.54-3.87-1.54-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.2 1.77 1.2 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.69 0-1.26.45-2.29 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11.03 11.03 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.62 1.59.23 2.76.11 3.05.74.8 1.18 1.83 1.18 3.09 0 4.42-2.7 5.39-5.27 5.68.41.36.78 1.07.78 2.15 0 1.55-.01 2.8-.01 3.18 0 .31.21.67.8.56C20.21 21.42 23.5 17.1 23.5 12 23.5 5.65 18.35.5 12 .5z"/>
+        </svg>
+        Code
+      </a>
+    </div>
+  </header>
+
+  <main>
+
+    <section>
+      <div class="teaser">
+        We introduce <strong>Recurrent Autoregressive Diffusion (RAD)</strong>, a generative framework that unifies
+        the long-range memory of recurrent state-space models with the expressive local attention of diffusion
+        transformers—achieving state-of-the-art performance on long-sequence generation tasks.
+      </div>
+    </section>
+
+    <section id="abstract">
+      <h2>Abstract</h2>
+      <p>
+        Diffusion models have demonstrated remarkable success in generating high-fidelity data across
+        continuous domains, while autoregressive models excel at capturing long-range dependencies
+        in sequential data. However, combining the strengths of both paradigms—particularly at scale—
+        remains an open challenge. We present <strong>Recurrent Autoregressive Diffusion (RAD)</strong>,
+        a novel generative architecture that integrates a recurrent global memory mechanism with a
+        local diffusion transformer. At each autoregressive step, a compact recurrent state summarizes
+        all previously generated context, which is then used to condition a local diffusion process
+        responsible for generating the next segment. This design decouples global coherence from
+        local fidelity: the recurrent module maintains consistency across the entire sequence, while
+        the diffusion module ensures high-quality local generation. We validate RAD on long-form
+        image synthesis, audio generation, and video prediction benchmarks, where it consistently
+        outperforms baselines in both sample quality and computational efficiency. Our results suggest
+        that recurrent global memory and local attention are highly complementary, opening a new
+        direction for scalable generative modeling.
+      </p>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Recurrent Autoregressive Diffusion &nbsp;·&nbsp; 2025</p>
+  </footer>
+
+</body>
+</html>
