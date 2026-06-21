@@ -240,27 +240,16 @@
       <div class="teaser">
         We introduce <strong>Recurrent Autoregressive Diffusion (RAD)</strong>, a generative framework that unifies
         the long-range memory of recurrent state-space models with the expressive local attention of diffusion
-        transformers—achieving state-of-the-art performance on long-sequence generation tasks.
+        transformers.
       </div>
     </section>
 
     <section id="abstract">
       <h2>Abstract</h2>
       <p>
-        Diffusion models have demonstrated remarkable success in generating high-fidelity data across
-        continuous domains, while autoregressive models excel at capturing long-range dependencies
-        in sequential data. However, combining the strengths of both paradigms—particularly at scale—
-        remains an open challenge. We present <strong>Recurrent Autoregressive Diffusion (RAD)</strong>,
-        a novel generative architecture that integrates a recurrent global memory mechanism with a
-        local diffusion transformer. At each autoregressive step, a compact recurrent state summarizes
-        all previously generated context, which is then used to condition a local diffusion process
-        responsible for generating the next segment. This design decouples global coherence from
-        local fidelity: the recurrent module maintains consistency across the entire sequence, while
-        the diffusion module ensures high-quality local generation. We validate RAD on long-form
-        image synthesis, audio generation, and video prediction benchmarks, where it consistently
-        outperforms baselines in both sample quality and computational efficiency. Our results suggest
-        that recurrent global memory and local attention are highly complementary, opening a new
-        direction for scalable generative modeling.
+        Recent advancements in video generation have demonstrated the potential of using video diffusion models as world models, with autoregressive generation of infinitely long videos through masked conditioning.
+        However, such models, usually with local full attention, lack effective memory compression and retrieval for long-term generation beyond the window size, leading to issues of forgetting and spatiotemporal inconsistencies.
+        To enhance the retention of historical information within a fixed memory budget, we introduce a recurrent neural network (RNN) into the diffusion transformer framework. Specifically, a diffusion model incorporating LSTM with attention achieves comparable performance to state-of-the-art RNN blocks, such as TTT and Mamba2. Moreover, existing diffusion-RNN approaches often suffer from performance degradation due to training-inference gap or the lack of overlap across windows. To address these limitations, we propose a novel Recurrent Autoregressive Diffusion (RAD) framework, which executes frame-wise autoregression for memory update and retrieval, consistently across training and inference time. Experiments on Memory Maze and Minecraft datasets demonstrate the superiority of RAD for long video generation, highlighting the efficiency of LSTM in sequence modeling.
       </p>
     </section>
 
