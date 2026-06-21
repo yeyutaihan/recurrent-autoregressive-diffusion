@@ -38,6 +38,53 @@
       font-size: 1rem;
       color: #ccd6f6;
       margin-bottom: 32px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: left;
+      line-height: 1.5;
+    }
+
+    .author-card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 14px 16px;
+      backdrop-filter: blur(4px);
+    }
+
+    .author-name {
+      display: block;
+      color: #ffffff;
+      font-size: 1.02rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .author-affiliation {
+      display: block;
+      color: #d8e3ff;
+    }
+
+    .author-email {
+      display: block;
+      color: #8be9de;
+      text-decoration: none;
+      word-break: break-word;
+    }
+
+    .author-note {
+      color: #ffe7a3;
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 640px) {
+      .authors {
+        grid-template-columns: 1fr;
+      }
     }
 
     .button-group {
@@ -131,7 +178,44 @@
 
   <header>
     <h1>Recurrent Autoregressive Diffusion:<br>Global Memory Meets Local Attention</h1>
-    <p class="authors">Anonymous Authors &nbsp;·&nbsp; 2025</p>
+    <div class="authors">
+      <div class="author-card">
+        <span class="author-name">Taiye Chen</span>
+        <span class="author-affiliation">Peking University</span>
+        <a class="author-email" href="mailto:yeyutaihan@stu.pku.edu.cn">yeyutaihan@stu.pku.edu.cn</a>
+      </div>
+      <div class="author-card">
+        <span class="author-name">Zihan Ding</span>
+        <span class="author-affiliation">Princeton University</span>
+        <a class="author-email" href="mailto:zihand@princeton.edu">zihand@princeton.edu</a>
+      </div>
+      <div class="author-card">
+        <span class="author-name">Anjian Li</span>
+        <span class="author-affiliation">Princeton University</span>
+        <a class="author-email" href="mailto:anjianl@princeton.edu">anjianl@princeton.edu</a>
+      </div>
+      <div class="author-card">
+        <span class="author-name">Christina Zhang</span>
+        <span class="author-affiliation">Princeton University</span>
+        <a class="author-email" href="mailto:christinaz@princeton.edu">christinaz@princeton.edu</a>
+      </div>
+      <div class="author-card">
+        <span class="author-name">Zeqi Xiao</span>
+        <span class="author-affiliation">Nanyang Technological University</span>
+        <a class="author-email" href="mailto:zeqixiao1@gmail.com">zeqixiao1@gmail.com</a>
+      </div>
+      <div class="author-card">
+        <span class="author-name">Yisen Wang</span>
+        <span class="author-affiliation">Peking University</span>
+        <a class="author-email" href="mailto:yisen.wang@pku.edu.cn">yisen.wang@pku.edu.cn</a>
+      </div>
+      <div class="author-card">
+        <span class="author-name">Chi Jin</span>
+        <span class="author-affiliation">Princeton University</span>
+        <a class="author-email" href="mailto:chij@princeton.edu">chij@princeton.edu</a>
+        <span class="author-note">Corresponding Author</span>
+      </div>
+    </div>
     <div class="button-group">
       <!-- Replace href="#" with your actual paper link -->
       <a class="btn btn-paper" href="#" target="_blank" rel="noopener noreferrer">
@@ -183,7 +267,7 @@
   </main>
 
   <footer>
-    <p>Recurrent Autoregressive Diffusion &nbsp;·&nbsp; 2025</p>
+    <p>Recurrent Autoregressive Diffusion &nbsp;·&nbsp; ECCV 2026</p>
   </footer>
 
 </body>
