@@ -492,16 +492,27 @@
             font-size: 0.9rem;
             margin-top: -6px;
         }
+        .algorithm-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 26px;
+            margin: 26px 0;
+        }
+        .algorithm-row .algorithm-box {
+            flex: 1 1 calc(50% - 13px);
+            min-width: 320px;
+            margin: 0;
+        }
         .algorithm-box {
-            background: var(--slate-900);
-            color: var(--slate-200);
+            background: #ffffff;
+            color: var(--slate-800);
             border-radius: 12px;
             padding: 0;
             margin: 26px 0;
             font-size: 0.92rem;
             font-family: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
             box-shadow: var(--shadow-md);
-            border: 1px solid #1e293b;
+            border: 1px solid var(--slate-200);
         }
         .algorithm-box .algorithm-body {
             overflow-x: auto;
@@ -510,7 +521,7 @@
         .algorithm-title {
             font-family: "Inter", sans-serif;
             font-weight: 700;
-            color: #93c5fd;
+            color: #2563eb;
             font-size: 1rem;
             cursor: pointer;
             list-style: none;
@@ -522,7 +533,7 @@
             transition: background 0.2s ease;
         }
         .algorithm-title:hover {
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(37, 99, 235, 0.06);
         }
         .algorithm-title::-webkit-details-marker {
             display: none;
@@ -539,15 +550,15 @@
         }
         .algorithm-require,
         .algorithm-return {
-            color: var(--slate-300);
+            color: var(--slate-700);
             padding: 8px 0;
         }
         .algorithm-require {
-            border-bottom: 1px dashed #334155;
+            border-bottom: 1px dashed var(--slate-300);
             margin-bottom: 6px;
         }
         .algorithm-return {
-            border-top: 1px dashed #334155;
+            border-top: 1px dashed var(--slate-300);
             margin-top: 4px;
         }
         .algo-steps {
@@ -574,7 +585,7 @@
             flex: 1;
         }
         .algo-annot {
-            color: #38bdf8;
+            color: #0891b2;
             font-style: italic;
             font-size: 0.85rem;
             margin-left: 16px;
@@ -752,6 +763,7 @@
                 <li>Train-inference consistency: inference also uses clean hidden states after DDIM denoising steps</li>
             </ul>
 
+            <div class="algorithm-row">
             <details class="algorithm-box">
                 <summary class="algorithm-title">Algorithm 1: Inference Pipeline of Frame-wise RAD</summary>
                 <div class="algorithm-body">
@@ -812,6 +824,7 @@
                 <div class="algorithm-return"><strong>Return</strong> $\mathrm{MSE}(\mathbf{z},\mathbf{v}_{gt})$</div>
                 </div>
             </details>
+            </div>
 
             <h3>4. RNN Module Comparison (LSTM / Mamba2 / TTT)</h3>
             <table>
