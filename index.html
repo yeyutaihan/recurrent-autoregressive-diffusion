@@ -340,15 +340,29 @@
         }
         .comparison-row {
             display: grid;
-            grid-template-columns: minmax(112px, 0.22fr) repeat(3, minmax(0, 1fr));
-            gap: 16px;
-            align-items: center;
+            grid-template-columns: minmax(112px, 0.18fr) minmax(0, 1fr);
+            column-gap: 16px;
+            row-gap: 14px;
+            align-items: start;
             padding: 18px;
             border-radius: 12px;
             background: white;
             border: 1px solid var(--slate-200);
             box-shadow: var(--shadow-sm);
             transition: box-shadow 0.25s ease, transform 0.25s ease;
+        }
+        .video-grid {
+            grid-column: 2;
+            grid-row: 1;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            grid-template-rows: repeat(2, auto);
+            gap: 14px;
+        }
+        .video-grid .gt-figure {
+            grid-column: 4;
+            grid-row: 1 / span 2;
+            align-self: center;
         }
         .comparison-row:hover {
             box-shadow: var(--shadow-md);
@@ -451,32 +465,14 @@
             background: #dcfce7;
             color: #15803d;
         }
-        .paired-video {
+        .row-video {
             display: block;
-            width: 100%;
-            aspect-ratio: 32 / 9;
-            background: var(--slate-900);
-            border-radius: 8px;
-            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.18);
-        }
-        .video-crop {
-            position: relative;
             width: 100%;
             aspect-ratio: 16 / 9;
-            overflow: hidden;
             border-radius: 8px;
             background: var(--slate-900);
             box-shadow: 0 4px 14px rgba(15, 23, 42, 0.18);
         }
-        .video-crop video {
-            position: absolute;
-            top: 0;
-            height: 100%;
-            width: 200%;
-            display: block;
-        }
-        .video-crop.crop-left video { left: 0; }
-        .video-crop.crop-right video { left: -100%; }
         .mode-tag.truth {
             background: #e0e7ff;
             color: #4338ca;
@@ -692,6 +688,15 @@
             .comparison-row {
                 grid-template-columns: 1fr;
                 gap: 14px;
+            }
+            .video-grid {
+                grid-column: 1;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                grid-template-rows: repeat(4, auto);
+            }
+            .video-grid .gt-figure {
+                grid-column: 1 / -1;
+                grid-row: auto;
             }
             .sample-label {
                 padding-bottom: 2px;
@@ -944,109 +949,90 @@
         <section id="visual">
             <span class="section-eyebrow">Qualitative Results</span>
             <h2>Video Visualization Results</h2>
-            <p class="comparison-intro">Each row shows the same sample across three columns: the ground-truth reference, chunk-wise TTT generation, and frame-wise LSTM generation.</p>
+            <p class="comparison-intro">Each sample shows a 4&times;2 grid: the top row is chunk-wise generation and the bottom row is frame-wise generation, each compared across the Mamba2, TTT, and LSTM recurrent modules, alongside the shared ground-truth reference.</p>
             <div class="comparison-legend" aria-label="Video comparison legend">
-                <span><strong>Columns:</strong> ground truth &middot; chunk-wise TTT &middot; frame-wise LSTM</span>
+                <span><strong>Rows:</strong> chunk-wise (top) &middot; frame-wise (bottom)</span>
+                <span><strong>Columns:</strong> Mamba2 &middot; TTT &middot; LSTM &middot; Ground Truth</span>
             </div>
             <div class="comparison-gallery">
                 <div class="comparison-row">
                     <div class="sample-label">Sample 01<span>Matched sequence</span></div>
-                    <figure class="result-video"><figcaption><span>Ground Truth</span><span class="mode-tag truth">REFERENCE</span></figcaption><div class="video-crop crop-left"><video class="row-video" src="videos/chunk_ttt/000000-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
-                    <figure class="result-video"><figcaption><span>Chunk-wise TTT</span><span class="mode-tag chunk">CHUNK-WISE</span></figcaption><div class="video-crop crop-right"><video class="row-video" src="videos/chunk_ttt/000000-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
-                    <figure class="result-video"><figcaption><span>Frame-wise LSTM</span><span class="mode-tag frame">FRAME-WISE</span></figcaption><div class="video-crop crop-right"><video class="row-video" src="videos/frame_lstm/000000-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
+                    <div class="video-grid">
+                        <figure class="result-video"><figcaption><span>Mamba2</span><span class="mode-tag chunk">CHUNK-WISE</span></figcaption><video class="row-video" src="videos/chunk_mamba/000000.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video"><figcaption><span>TTT</span><span class="mode-tag chunk">CHUNK-WISE</span></figcaption><video class="row-video" src="videos/chunk_ttt/000000.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video"><figcaption><span>LSTM</span><span class="mode-tag chunk">CHUNK-WISE</span></figcaption><video class="row-video" src="videos/chunk_lstm/000000.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video gt-figure"><figcaption><span>Ground Truth</span><span class="mode-tag truth">REFERENCE</span></figcaption><video class="row-video" src="videos/gt/000000.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video"><figcaption><span>Mamba2</span><span class="mode-tag frame">FRAME-WISE</span></figcaption><video class="row-video" src="videos/frame_mamba/000000.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video"><figcaption><span>TTT</span><span class="mode-tag frame">FRAME-WISE</span></figcaption><video class="row-video" src="videos/frame_ttt/000000.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video"><figcaption><span>LSTM</span><span class="mode-tag frame">FRAME-WISE</span></figcaption><video class="row-video" src="videos/frame_lstm/000000.mp4" loop muted playsinline preload="metadata"></video></figure>
+                    </div>
                     <div class="row-controls">
-                        <button class="row-play" type="button" aria-label="Play all three videos">&#9654; Play</button>
-                        <input class="row-progress" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek all three videos">
+                        <button class="row-play" type="button" aria-label="Play all videos in this sample">&#9654; Play</button>
+                        <input class="row-progress" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek all videos in this sample">
                     </div>
                 </div>
                 <div class="comparison-row">
                     <div class="sample-label">Sample 02<span>Matched sequence</span></div>
-                    <figure class="result-video"><figcaption><span>Ground Truth</span><span class="mode-tag truth">REFERENCE</span></figcaption><div class="video-crop crop-left"><video class="row-video" src="videos/chunk_ttt/000001-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
-                    <figure class="result-video"><figcaption><span>Chunk-wise TTT</span><span class="mode-tag chunk">CHUNK-WISE</span></figcaption><div class="video-crop crop-right"><video class="row-video" src="videos/chunk_ttt/000001-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
-                    <figure class="result-video"><figcaption><span>Frame-wise LSTM</span><span class="mode-tag frame">FRAME-WISE</span></figcaption><div class="video-crop crop-right"><video class="row-video" src="videos/frame_lstm/000001-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
+                    <div class="video-grid">
+                        <figure class="result-video"><figcaption><span>Mamba2</span><span class="mode-tag chunk">CHUNK-WISE</span></figcaption><video class="row-video" src="videos/chunk_mamba/000001.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video"><figcaption><span>TTT</span><span class="mode-tag chunk">CHUNK-WISE</span></figcaption><video class="row-video" src="videos/chunk_ttt/000001.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video"><figcaption><span>LSTM</span><span class="mode-tag chunk">CHUNK-WISE</span></figcaption><video class="row-video" src="videos/chunk_lstm/000001.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video gt-figure"><figcaption><span>Ground Truth</span><span class="mode-tag truth">REFERENCE</span></figcaption><video class="row-video" src="videos/gt/000001.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video"><figcaption><span>Mamba2</span><span class="mode-tag frame">FRAME-WISE</span></figcaption><video class="row-video" src="videos/frame_mamba/000001.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video"><figcaption><span>TTT</span><span class="mode-tag frame">FRAME-WISE</span></figcaption><video class="row-video" src="videos/frame_ttt/000001.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video"><figcaption><span>LSTM</span><span class="mode-tag frame">FRAME-WISE</span></figcaption><video class="row-video" src="videos/frame_lstm/000001.mp4" loop muted playsinline preload="metadata"></video></figure>
+                    </div>
                     <div class="row-controls">
-                        <button class="row-play" type="button" aria-label="Play all three videos">&#9654; Play</button>
-                        <input class="row-progress" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek all three videos">
+                        <button class="row-play" type="button" aria-label="Play all videos in this sample">&#9654; Play</button>
+                        <input class="row-progress" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek all videos in this sample">
                     </div>
                 </div>
                 <div class="comparison-row">
                     <div class="sample-label">Sample 03<span>Matched sequence</span></div>
-                    <figure class="result-video"><figcaption><span>Ground Truth</span><span class="mode-tag truth">REFERENCE</span></figcaption><div class="video-crop crop-left"><video class="row-video" src="videos/chunk_ttt/000002-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
-                    <figure class="result-video"><figcaption><span>Chunk-wise TTT</span><span class="mode-tag chunk">CHUNK-WISE</span></figcaption><div class="video-crop crop-right"><video class="row-video" src="videos/chunk_ttt/000002-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
-                    <figure class="result-video"><figcaption><span>Frame-wise LSTM</span><span class="mode-tag frame">FRAME-WISE</span></figcaption><div class="video-crop crop-right"><video class="row-video" src="videos/frame_lstm/000002-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
+                    <div class="video-grid">
+                        <figure class="result-video"><figcaption><span>Mamba2</span><span class="mode-tag chunk">CHUNK-WISE</span></figcaption><video class="row-video" src="videos/chunk_mamba/000002.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video"><figcaption><span>TTT</span><span class="mode-tag chunk">CHUNK-WISE</span></figcaption><video class="row-video" src="videos/chunk_ttt/000002.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video"><figcaption><span>LSTM</span><span class="mode-tag chunk">CHUNK-WISE</span></figcaption><video class="row-video" src="videos/chunk_lstm/000002.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video gt-figure"><figcaption><span>Ground Truth</span><span class="mode-tag truth">REFERENCE</span></figcaption><video class="row-video" src="videos/gt/000002.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video"><figcaption><span>Mamba2</span><span class="mode-tag frame">FRAME-WISE</span></figcaption><video class="row-video" src="videos/frame_mamba/000002.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video"><figcaption><span>TTT</span><span class="mode-tag frame">FRAME-WISE</span></figcaption><video class="row-video" src="videos/frame_ttt/000002.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video"><figcaption><span>LSTM</span><span class="mode-tag frame">FRAME-WISE</span></figcaption><video class="row-video" src="videos/frame_lstm/000002.mp4" loop muted playsinline preload="metadata"></video></figure>
+                    </div>
                     <div class="row-controls">
-                        <button class="row-play" type="button" aria-label="Play all three videos">&#9654; Play</button>
-                        <input class="row-progress" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek all three videos">
+                        <button class="row-play" type="button" aria-label="Play all videos in this sample">&#9654; Play</button>
+                        <input class="row-progress" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek all videos in this sample">
                     </div>
                 </div>
                 <div class="comparison-row">
                     <div class="sample-label">Sample 04<span>Matched sequence</span></div>
-                    <figure class="result-video"><figcaption><span>Ground Truth</span><span class="mode-tag truth">REFERENCE</span></figcaption><div class="video-crop crop-left"><video class="row-video" src="videos/chunk_ttt/000003-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
-                    <figure class="result-video"><figcaption><span>Chunk-wise TTT</span><span class="mode-tag chunk">CHUNK-WISE</span></figcaption><div class="video-crop crop-right"><video class="row-video" src="videos/chunk_ttt/000003-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
-                    <figure class="result-video"><figcaption><span>Frame-wise LSTM</span><span class="mode-tag frame">FRAME-WISE</span></figcaption><div class="video-crop crop-right"><video class="row-video" src="videos/frame_lstm/000003-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
+                    <div class="video-grid">
+                        <figure class="result-video"><figcaption><span>Mamba2</span><span class="mode-tag chunk">CHUNK-WISE</span></figcaption><video class="row-video" src="videos/chunk_mamba/000003.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video"><figcaption><span>TTT</span><span class="mode-tag chunk">CHUNK-WISE</span></figcaption><video class="row-video" src="videos/chunk_ttt/000003.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video"><figcaption><span>LSTM</span><span class="mode-tag chunk">CHUNK-WISE</span></figcaption><video class="row-video" src="videos/chunk_lstm/000003.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video gt-figure"><figcaption><span>Ground Truth</span><span class="mode-tag truth">REFERENCE</span></figcaption><video class="row-video" src="videos/gt/000003.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video"><figcaption><span>Mamba2</span><span class="mode-tag frame">FRAME-WISE</span></figcaption><video class="row-video" src="videos/frame_mamba/000003.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video"><figcaption><span>TTT</span><span class="mode-tag frame">FRAME-WISE</span></figcaption><video class="row-video" src="videos/frame_ttt/000003.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video"><figcaption><span>LSTM</span><span class="mode-tag frame">FRAME-WISE</span></figcaption><video class="row-video" src="videos/frame_lstm/000003.mp4" loop muted playsinline preload="metadata"></video></figure>
+                    </div>
                     <div class="row-controls">
-                        <button class="row-play" type="button" aria-label="Play all three videos">&#9654; Play</button>
-                        <input class="row-progress" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek all three videos">
+                        <button class="row-play" type="button" aria-label="Play all videos in this sample">&#9654; Play</button>
+                        <input class="row-progress" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek all videos in this sample">
                     </div>
                 </div>
                 <div class="comparison-row">
                     <div class="sample-label">Sample 05<span>Matched sequence</span></div>
-                    <figure class="result-video"><figcaption><span>Ground Truth</span><span class="mode-tag truth">REFERENCE</span></figcaption><div class="video-crop crop-left"><video class="row-video" src="videos/chunk_ttt/000004-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
-                    <figure class="result-video"><figcaption><span>Chunk-wise TTT</span><span class="mode-tag chunk">CHUNK-WISE</span></figcaption><div class="video-crop crop-right"><video class="row-video" src="videos/chunk_ttt/000004-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
-                    <figure class="result-video"><figcaption><span>Frame-wise LSTM</span><span class="mode-tag frame">FRAME-WISE</span></figcaption><div class="video-crop crop-right"><video class="row-video" src="videos/frame_lstm/000004-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
-                    <div class="row-controls">
-                        <button class="row-play" type="button" aria-label="Play all three videos">&#9654; Play</button>
-                        <input class="row-progress" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek all three videos">
+                    <div class="video-grid">
+                        <figure class="result-video"><figcaption><span>Mamba2</span><span class="mode-tag chunk">CHUNK-WISE</span></figcaption><video class="row-video" src="videos/chunk_mamba/000004.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video"><figcaption><span>TTT</span><span class="mode-tag chunk">CHUNK-WISE</span></figcaption><video class="row-video" src="videos/chunk_ttt/000004.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video"><figcaption><span>LSTM</span><span class="mode-tag chunk">CHUNK-WISE</span></figcaption><video class="row-video" src="videos/chunk_lstm/000004.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video gt-figure"><figcaption><span>Ground Truth</span><span class="mode-tag truth">REFERENCE</span></figcaption><video class="row-video" src="videos/gt/000004.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video"><figcaption><span>Mamba2</span><span class="mode-tag frame">FRAME-WISE</span></figcaption><video class="row-video" src="videos/frame_mamba/000004.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video"><figcaption><span>TTT</span><span class="mode-tag frame">FRAME-WISE</span></figcaption><video class="row-video" src="videos/frame_ttt/000004.mp4" loop muted playsinline preload="metadata"></video></figure>
+                        <figure class="result-video"><figcaption><span>LSTM</span><span class="mode-tag frame">FRAME-WISE</span></figcaption><video class="row-video" src="videos/frame_lstm/000004.mp4" loop muted playsinline preload="metadata"></video></figure>
                     </div>
-                </div>
-                <div class="comparison-row">
-                    <div class="sample-label">Sample 06<span>Matched sequence</span></div>
-                    <figure class="result-video"><figcaption><span>Ground Truth</span><span class="mode-tag truth">REFERENCE</span></figcaption><div class="video-crop crop-left"><video class="row-video" src="videos/chunk_ttt/000005-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
-                    <figure class="result-video"><figcaption><span>Chunk-wise TTT</span><span class="mode-tag chunk">CHUNK-WISE</span></figcaption><div class="video-crop crop-right"><video class="row-video" src="videos/chunk_ttt/000005-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
-                    <figure class="result-video"><figcaption><span>Frame-wise LSTM</span><span class="mode-tag frame">FRAME-WISE</span></figcaption><div class="video-crop crop-right"><video class="row-video" src="videos/frame_lstm/000005-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
                     <div class="row-controls">
-                        <button class="row-play" type="button" aria-label="Play all three videos">&#9654; Play</button>
-                        <input class="row-progress" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek all three videos">
-                    </div>
-                </div>
-                <div class="comparison-row">
-                    <div class="sample-label">Sample 07<span>Matched sequence</span></div>
-                    <figure class="result-video"><figcaption><span>Ground Truth</span><span class="mode-tag truth">REFERENCE</span></figcaption><div class="video-crop crop-left"><video class="row-video" src="videos/chunk_ttt/000006-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
-                    <figure class="result-video"><figcaption><span>Chunk-wise TTT</span><span class="mode-tag chunk">CHUNK-WISE</span></figcaption><div class="video-crop crop-right"><video class="row-video" src="videos/chunk_ttt/000006-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
-                    <figure class="result-video"><figcaption><span>Frame-wise LSTM</span><span class="mode-tag frame">FRAME-WISE</span></figcaption><div class="video-crop crop-right"><video class="row-video" src="videos/frame_lstm/000006-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
-                    <div class="row-controls">
-                        <button class="row-play" type="button" aria-label="Play all three videos">&#9654; Play</button>
-                        <input class="row-progress" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek all three videos">
-                    </div>
-                </div>
-                <div class="comparison-row">
-                    <div class="sample-label">Sample 08<span>Matched sequence</span></div>
-                    <figure class="result-video"><figcaption><span>Ground Truth</span><span class="mode-tag truth">REFERENCE</span></figcaption><div class="video-crop crop-left"><video class="row-video" src="videos/chunk_ttt/000007-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
-                    <figure class="result-video"><figcaption><span>Chunk-wise TTT</span><span class="mode-tag chunk">CHUNK-WISE</span></figcaption><div class="video-crop crop-right"><video class="row-video" src="videos/chunk_ttt/000007-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
-                    <figure class="result-video"><figcaption><span>Frame-wise LSTM</span><span class="mode-tag frame">FRAME-WISE</span></figcaption><div class="video-crop crop-right"><video class="row-video" src="videos/frame_lstm/000007-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
-                    <div class="row-controls">
-                        <button class="row-play" type="button" aria-label="Play all three videos">&#9654; Play</button>
-                        <input class="row-progress" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek all three videos">
-                    </div>
-                </div>
-                <div class="comparison-row">
-                    <div class="sample-label">Sample 09<span>Matched sequence</span></div>
-                    <figure class="result-video"><figcaption><span>Ground Truth</span><span class="mode-tag truth">REFERENCE</span></figcaption><div class="video-crop crop-left"><video class="row-video" src="videos/chunk_ttt/000008-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
-                    <figure class="result-video"><figcaption><span>Chunk-wise TTT</span><span class="mode-tag chunk">CHUNK-WISE</span></figcaption><div class="video-crop crop-right"><video class="row-video" src="videos/chunk_ttt/000008-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
-                    <figure class="result-video"><figcaption><span>Frame-wise LSTM</span><span class="mode-tag frame">FRAME-WISE</span></figcaption><div class="video-crop crop-right"><video class="row-video" src="videos/frame_lstm/000008-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
-                    <div class="row-controls">
-                        <button class="row-play" type="button" aria-label="Play all three videos">&#9654; Play</button>
-                        <input class="row-progress" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek all three videos">
-                    </div>
-                </div>
-                <div class="comparison-row">
-                    <div class="sample-label">Sample 10<span>Matched sequence</span></div>
-                    <figure class="result-video"><figcaption><span>Ground Truth</span><span class="mode-tag truth">REFERENCE</span></figcaption><div class="video-crop crop-left"><video class="row-video" src="videos/chunk_ttt/000009-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
-                    <figure class="result-video"><figcaption><span>Chunk-wise TTT</span><span class="mode-tag chunk">CHUNK-WISE</span></figcaption><div class="video-crop crop-right"><video class="row-video" src="videos/chunk_ttt/000009-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
-                    <figure class="result-video"><figcaption><span>Frame-wise LSTM</span><span class="mode-tag frame">FRAME-WISE</span></figcaption><div class="video-crop crop-right"><video class="row-video" src="videos/frame_lstm/000009-web.mp4" loop muted playsinline preload="metadata"></video></div></figure>
-                    <div class="row-controls">
-                        <button class="row-play" type="button" aria-label="Play all three videos">&#9654; Play</button>
-                        <input class="row-progress" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek all three videos">
+                        <button class="row-play" type="button" aria-label="Play all videos in this sample">&#9654; Play</button>
+                        <input class="row-progress" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek all videos in this sample">
                     </div>
                 </div>
             </div>
